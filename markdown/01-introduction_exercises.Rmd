@@ -1,20 +1,34 @@
 ---
-title: 'R: Introduction - Class Exercises'
-author: "Jordan Casey"
-date: "12/23/2022"
+title: "Marine Community Ecology 2024"
+subtitle: "01-Introduction to coding in R"
+author: "Simon J. Brandl"
+institute: "The University of Texas at Austin"
+date: "2024/01/01 (updated: `r Sys.Date()`)"
 output:
-  html_document:
+  xaringan::moon_reader:
     toc: yes
-    number_sections: yes
-  pdf_document:
-    toc: yes
-editor_options:
-  chunk_output_type: console
+    css: ["xaringan-themer.css"]
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      ratio: 16:9
+      highlightLines: true
+      countIncrementalSlides: false
 ---
-
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+```{r xaringan-themer, include=FALSE, warning=FALSE}
+### setup chunk
+# load packages
+library(xaringanthemer)
+library(fontawesome)
+library(emo)
 library(tidyverse)
+style_duo_accent_inverse(
+  primary_color = "#85D3D1",
+  secondary_color = "#0D2A47",
+  header_font_google = google_font("Josefin Sans"),
+  text_font_google   = google_font("Montserrat", "300", "300i"),
+  code_font_google   = google_font("Fira Mono")
+)
 ```
 
 # Load package 
