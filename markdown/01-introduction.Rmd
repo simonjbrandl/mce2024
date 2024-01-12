@@ -29,7 +29,7 @@ style_duo_accent_inverse(code_highlight_color = "#cc5500",
   code_inline_color = "grey",
   inverse_background_color = "#85D3D1",
   inverse_text_color = "#0D2A47",
-  code_inline_background_color = "#0D2A47",
+  code_inline_background_color = "#85D3D1",
   header_font_google = google_font("Josefin Sans"),
   text_font_google   = google_font("Montserrat", "300", "300i"),
   code_font_google   = google_font("Fira Mono"),
@@ -223,7 +223,7 @@ class: inverse, center, top
 (sin(2) + cos(2))^2 + (sin(2) - cos(2))^2
 ```
 
-### c) Create an object that contains MCE, an object that contains the number 2024, and a new object that combines the two.   
+### c) Create an object that contains the text 'MCE', an object that contains the number 2024, and a new object that combines the two.   
 ---
 class: middle, center
 
@@ -348,4 +348,250 @@ reps.diff1
 reps.diff2 <- paste(rep3, rep4) # same operation, but different combination
 reps.diff2
 ```
+---
 
+### Elements within vectors
+- you can isolate specific elements in your vectors using square brackets
+```{r, echo = TRUE}
+seq1 # call one of your vectors to see it
+
+element3 <- seq1[3] # select only the third element
+element3
+```
+- this also works for multiple elements at a time using the <span style="color:orange"> *c()* </span> function or ranges
+```{r, echo = TRUE}
+three.elements <- seq1[c(3,4,5)] # using c() to get elements 3, 4, and 5
+three.elements
+
+last.eight <- seq1[2:10] # using x:y to get the last 8 elements
+last.eight
+```
+---
+## Apply logic
+- you can also extract values based on a condition with logical operators
+- operators are pretty standard and works as below
+- the '==' is a common source of error `r emo::ji('person_facepalming_medium_skin_tone')`
+
+
+ ### Overview of common operators
+
+Operator | Meaning
+---------|---------
+>= | values equal or greater
+<= | values equal or smaller
+> | values greater
+< | values smaller
+== | value equals
+!= | value does not equal
+
+---
+## Logic in practice
+- to demonstrate logic, we need a somewhat more compledx vector
+- we're creating this using one of the distributional functions, in this case a randeom selection of integers using the <span style="color:orange"> *rpois()* </span> function
+```{r, echo = TRUE, results='markup'}
+random.vals <- rpois(30, lambda = 5) # create a new vector with 30 (somewhat) random integers
+random.vals
+
+selected.vals <- random.vals[random.vals > 4] # select values that are greater than 4
+selected.vals
+
+values.not.6 <- random.vals[random.vals != 6] # select values that are not 6
+values.not.6
+```
+- note that the [] requires you to re-specify the vector you want to use for the operation `r emo::ji('index_pointing_up')`
+
+---
+## Combining logical statements
+- we can use Boolean expressions to combine logical statements
+- three symbols: "&" = AND, "|" = OR, "!" = NOT
+- can be applied separately and in combination
+- NOT ("!") has precedence over AND ("&"), which has precedence over OR ("|")
+```{r, echo = TRUE}
+boolean.and <- random.vals[random.vals >= 4 & random.vals <= 8] # values between 4 and 8
+boolean.and
+
+boolean.or <- random.vals[random.vals == 3 | random.vals == 5] # values that are 3 or 5
+boolean.or
+
+boolean.not <- random.vals[random.vals != 4 & random.vals > 2 & random.vals < 8] # values that are between 2 and 8 but not 4
+boolean.not
+```
+---
+## Assign new values
+- you can also replace values using the same principle
+- works for single values and values selected by logic
+```{r, echo = TRUE}
+random.vals[1] <- 1000 # replace the first value of the vector with 1000
+random.vals
+
+random.vals[random.vals > 5] <- 1000 # replace values >5 with 1000
+random.vals
+```
+---
+## Non-numerical vectors `r emo::ji('tropical_fish')`
+- vectors can also consist of many different words
+- same principles as for numbers apply, but logical operations are limited
+```{r, echo = TRUE}
+fish.comm <- paste(rep(c("whitefish", "bluefish", "yellowfish"), 5)) # create a vector of words
+fish.comm
+
+white.extinct <- fish.comm[fish.comm != "whitefish"] # remove whitefish
+white.extinct
+
+white.extinct[white.extinct == "yellowfish"] <- "greenfish" # replace yellowfish with greenfish
+white.extinct
+```
+---
+## Ordering vectors
+- sometimes it's useful to sort and order your vectors
+- this can be accomplished using the <span style="color:orange"> *sort()* </span> function
+```{r, echo = TRUE}
+more.vals <- rpois(20, 5) # use the rpois() function again to create a vector
+more.vals
+
+more.vals.sorted <- sort(more.vals) # use sort() to sort values in increasing order
+more.vals.sorted
+
+more.vals.sorted.dec <- rev(sort(more.vals)) # sort the values in decreasing order using "decreasing = TRUE" or the rev() function
+more.vals.sorted.dec
+```
+---
+## Missing data
+- sometimes, vectors contain elements that aren't there or possible, called 'NAs'
+- this is not always a problem, but can throw some functions that need numeric values
+```{r, echo = TRUE}
+fish.numbers <- rpois(20, 5) # create vector with rpois()
+fish.numbers
+
+fish.numbers[c(5,15)] <- NA # replace some values with NAs
+fish.numbers
+
+fish.mean <- mean(fish.numbers) # calculate the mean fish number
+fish.mean
+```
+## `r emo::ji('loudly_crying_face')`
+- luckily, it is easy to remove NAs from some functions, or exclude them from your vector
+```{r, echo = TRUE}
+fish.mean.nona <- mean(fish.numbers, na.rm = TRUE) # na.rm = TRUE removes NAs within a function
+fish.mean.nona
+
+fish.mean.nona <- mean(fish.numbers[!is.na(fish.numbers)]) # !is.na(fish.density) excludes them from the vector prior to the function
+fish.mean.nona
+```
+---
+class: middle, center
+
+# Data
+# `r emo::ji("chart_decreasing")`
+
+---
+class: left, top
+
+
+## Data classes
+
+There are several different types of data classes in R
+
+#### - numeric: all numbers `r emo::ji('abacus')`
+#### - integer: whole numbers without decimals `r emo::ji('input_numbers')`
+#### - logical: TRUE or FALSE (and NA) `r emo::ji('check')`
+#### - character: character strings and factors (letters, symbols, numbers) `r emo::ji('input_latin_uppercase')` 
+---
+
+## Working with data classes
+
+- it is absolutely critical to understand what class your data are
+- mixups in data classes are a common source of error `r emo::ji('cross_mark')`
+
+```{r, echo = TRUE}
+numbers <- seq(1:20) # create vector of numbers
+
+class(numbers) # find data class using class() or str()
+
+is.numeric(numbers) # check data class using "is" and "as"
+is.character(numbers) # check data class using "is" and "as"
+
+numbers.char <- as.character(numbers) # turn data into characters
+numbers.char # note the quotes around the numbers
+```
+---
+### Matrices
+- there are several types of data structures in R
+- scalars, vectors, matrices, lists, data frames, arrays
+```{r, echo = TRUE}
+scalar <- 23 # a single value is called a scalar
+scalar
+
+many.scalars <- rep(1:23, 2)  # a collection of scalars is a vector
+many.scalars
+
+the.matrix <- matrix(1:24, nrow = 4, byrow = FALSE) # when it is in two dimensions, it's a matrix
+the.matrix
+```
+---
+### Rows and columns
+- in two-dimensional arrangements, we can work with columns and rows
+- for example, we can create a dataset of three fish species across six sites `r emo::ji('fish')` `r emo::ji('blowfish')` `r emo::ji('tropical_fish')`
+- matrices can only hold one type of data (usually numeric)
+```{r, echo = TRUE}
+the.matrix <- matrix(rpois(18, 3), nrow = 6, byrow = FALSE) # create a matrix
+the.matrix
+
+colnames(the.matrix) <- c("bluefish", "blowfish", "yellowfish") # assign column names
+
+rownames(the.matrix) <- c("site1", "site2", "site3", "site4", "site5", "site6") # assign row names
+the.matrix
+```
+---
+## Data frames
+- to combine data of different classes, you need to turn it into a data.frame
+- selecting elements within data.frames can be done using $ and [x,y]
+```{r, echo = TRUE}
+fish.df <- as.data.frame(the.matrix) # convert matrix to data frame
+fish.df$blowfish # select a specific column using the $ sign 
+
+fish.df[1,] # show the first row
+
+locations <- c("Australia", "Indonesia", "Philippines", "Fiji", "Solomons", "Papua New Guinea") # make a vector with 6 site locations
+fish.df$location <- locations # add a character vector to a data frame
+fish.df
+```
+
+---
+## Tibbles
+- tibbles are similar to data.frames but offer more information
+```{r, echo = TRUE}
+str(fish.df) # check structure of data frame
+
+fish.tibble <- as_tibble(fish.df) # convert data frame to tibble
+
+fish.tibble # view information provided by tibble
+```
+---
+# Loading and saving data
+- you'll often import your data from csv files or save them as such
+- use the <span style="color:orange"> *write.csv()* </span> function to save a data frame or tibble in your working directory
+- use the <span style="color:orange"> *read.csv()* </span> function to import data
+```{r, echo = TRUE}
+write.csv(fish.tibble, file = "data/fishtibble.csv", row.names = FALSE) # row.names = FALSE specifies to not include a column of row numbers in the csv
+
+loaded.fish.tibble <- read.csv(file = "data/fishtibble.csv") # load that csv file back into R
+loaded.fish.tibble
+```
+---
+class: inverse, center, top
+
+# Exercise 1.2 `r emo::ji("weight_lifting_woman")`
+
+### a) Create a sequence of even numbers from 2 to 20
+
+### b) Create a vector with random integer values using rpois(100, 10) and obtain its mean
+
+### c) Retain only values <6 and calculate the mean again
+
+### d) Download the dataset called "coralreefherbivores.csv" from Canvas, and put it in your working directory in a folder called "data"
+
+### e) Read in the data using the  <span style="color:orange"> *read_csv()* </span> function, specifying correct path to the "data" folder
+---
+class: center, middle
+# The end
